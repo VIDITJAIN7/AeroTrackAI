@@ -1,12 +1,12 @@
 graph TD
     subgraph "Phase 1: Data Ingestion"
-        A -->|1. GET /states/all| B{Custom Fivetran Connector<br><em>Built with Python SDK</em>};
+        A(OpenSky Network API) -->|1. GET /states/all| B{Custom Fivetran Connector<br><em>Built with Python SDK</em>};
         B -->|2. Process & Upsert Data| C[Fivetran Platform];
     end
 
     subgraph "Phase 2: Data Warehousing"
         C -->|3. Load Real-Time Data| D;
-        E -->|Manual Upload| F;
+        E(Static CSV: maintenance_schedules) -->|Manual Upload| F;
     end
 
     subgraph "Phase 3: AI Logic & Orchestration"
