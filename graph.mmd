@@ -1,27 +1,18 @@
 graph TD
-    subgraph "Phase 1: Data Ingestion"
-        A(OpenSky Network API) -->|1. GET /states/all| B{Custom Fivetran Connector<br><em>Built with Python SDK</em>};
+    subgraph "Phase 1 & 2: Data Ingestion & Warehousing"
+        A(OpenSky Network API) -->|1. GET /states/all| B;
         B -->|2. Process & Upsert Data| C[Fivetran Platform];
-    end
-
-    subgraph "Phase 2: Data Warehousing"
         C -->|3. Load Real-Time Data| D;
         E(Static CSV: maintenance_schedules) -->|Manual Upload| F;
     end
 
-    subgraph "Phase 3: AI Logic & Orchestration"
-        G(Vertex AI Agent<br><em>'AeroTrack AI'</em>) -- Defines --> H{Custom Tool: 'find_incoming_aircraft'};
-        H -- Invokes --> I(Google Cloud Function);
-        I -->|4. SQL Query joins data| D;
-        I -->| | F;
-        I -->|5. Returns Structured JSON to Agent| G;
-    end
-
-    subgraph "Phase 4: User Application"
-        J[User<br><em>(Logistics Manager)</em>] -->|6. Asks: 'Show planes needing A-check at JFK in 3 hrs'| K{Frontend Web App<br><em>(Deployed on Cloud Run)</em>};
-        K -->|7. Sends Query via API Call| G;
-        G -->|8. Synthesizes Natural Language Response| K;
-        K -->|9. Displays Predictive Alert to User| J;
+    subgraph "Phase 3 & 4: AI Agent & User Application"
+        J["User (Logistics Manager)"] -->|4. Asks question via UI| K;
+        K -->|5. Sends Query to Agent| G("Vertex AI Agent: 'AeroTrack AI'");
+        G -- Invokes Tool --> I(Google Cloud Function);
+        I -- Queries Data --> D & F;
+        G -->|6. Synthesizes & Returns Response| K;
+        K -->|7. Displays Predictive Alert| J;
     end
 
     style A fill:#D6EAF8
