@@ -12,16 +12,16 @@ graph TD
     subgraph "Phase 3: AI Logic & Orchestration"
         G(Vertex AI Agent<br><em>'AeroTrack AI'</em>) -- Defines --> H{Custom Tool: 'find_incoming_aircraft'};
         H -- Invokes --> I(Google Cloud Function);
-        I -->|4. SQL Query joins live & static data| D & F;
-        D & F -->|5. Returns Matching Aircraft Data (JSON)| I;
-        I -->|6. Returns Structured JSON to Agent| G;
+        I -->|4. SQL Query joins data| D;
+        I -->| | F;
+        I -->|5. Returns Structured JSON to Agent| G;
     end
 
     subgraph "Phase 4: User Application"
-        J[User<br><em>(Logistics Manager)</em>] -->|7. Asks: 'Show planes needing A-check at JFK in 3 hrs'| K{Frontend Web App<br><em>(Deployed on Cloud Run)</em>};
-        K -->|8. Sends Query via API Call| G;
-        G -->|9. Synthesizes Natural Language Response| K;
-        K -->|10. Displays Predictive Alert to User| J;
+        J[User<br><em>(Logistics Manager)</em>] -->|6. Asks: 'Show planes needing A-check at JFK in 3 hrs'| K{Frontend Web App<br><em>(Deployed on Cloud Run)</em>};
+        K -->|7. Sends Query via API Call| G;
+        G -->|8. Synthesizes Natural Language Response| K;
+        K -->|9. Displays Predictive Alert to User| J;
     end
 
     style A fill:#D6EAF8
