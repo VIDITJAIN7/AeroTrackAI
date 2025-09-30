@@ -1,0 +1,33 @@
+graph TD
+    subgraph "Phase 1: Data Ingestion"
+        A -->|1. GET /states/all| B{Custom Fivetran Connector};
+        B -- Python SDK -->|2. Process & Upsert Data| C[Fivetran Platform];
+    end
+
+    subgraph "Phase 2: Data Warehousing"
+        C -->|3. Load Real-Time Data| D;
+        E -->|Manual Upload| F;
+    end
+
+    subgraph "Phase 3: AI Logic & Orchestration"
+        G(Vertex AI Agent<br><em>'AeroTrack AI'</em>) -- Defines --> H{Custom Tool: 'find_incoming_aircraft'};
+        H -- Invokes --> I(Google Cloud Function);
+        I -- SQL Query -->|4. Joins live flight data with schedules| D;
+        I -- SQL Query -->|4. | F;
+        D & F -->|5. Returns Matching Aircraft Data (JSON)| I;
+        I -->|6. Returns Structured JSON to Agent| G;
+    end
+
+    subgraph "Phase 4: User Application"
+        J[User<br><em>(Logistics Manager)</em>] -->|7. Asks: 'Show planes needing A-check at JFK in 3 hrs'| K{Frontend Web App<br><em>(Deployed on Cloud Run)</em>};
+        K -->|8. Sends Query via API Call| G;
+        G -->|9. Synthesizes Natural Language Response| K;
+        K -->|10. Displays Predictive Alert to User| J;
+    end
+
+    style A fill:#D6EAF8
+    style B fill:#F5B7B1
+    style D fill:#D5F5E3
+    style F fill:#D5F5E3
+    style G fill:#FCF3CF
+    style K fill:#EBDEF0
