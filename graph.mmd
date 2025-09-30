@@ -1,7 +1,7 @@
 graph TD
     subgraph "Phase 1: Data Ingestion"
         A -->|1. GET /states/all| B{Custom Fivetran Connector<br><em>Built with Python SDK</em>};
-        B -- Python SDK -->|2. Process & Upsert Data| C[Fivetran Platform];
+        B -->Python SDK -->|2. Process & Upsert Data| C[Fivetran Platform];
     end
 
     subgraph "Phase 2: Data Warehousing"
