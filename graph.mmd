@@ -1,6 +1,6 @@
 graph TD
     subgraph "Phase 1: Data Ingestion"
-        A -->|1. GET /states/all| B{Custom Fivetran Connector};
+        A -->|1. GET /states/all| B{Custom Fivetran Connector<br><em>Built with Python SDK</em>};
         B -- Python SDK -->|2. Process & Upsert Data| C[Fivetran Platform];
     end
 
@@ -13,7 +13,7 @@ graph TD
         G(Vertex AI Agent<br><em>'AeroTrack AI'</em>) -- Defines --> H{Custom Tool: 'find_incoming_aircraft'};
         H -- Invokes --> I(Google Cloud Function);
         I -- SQL Query -->|4. Joins live flight data with schedules| D;
-        I -- SQL Query -->|4. | F;
+        I -- SQL Query --> F;
         D & F -->|5. Returns Matching Aircraft Data (JSON)| I;
         I -->|6. Returns Structured JSON to Agent| G;
     end
