@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Python virtual environment
+venv/
+
+# Fivetran SDK local test files
+files/
+warehouse.db
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
