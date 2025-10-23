@@ -8,7 +8,7 @@ DECLARE latest_prediction_table STRING;
 -- Step 2: Find the most recently created predictions table
 SET latest_prediction_table = (
   SELECT table_name
-  FROM `quiet.....`
+  FROM `aerotrack_ai_connector_us_central1.INFORMATION_SCHEMA.TABLES`
   WHERE table_name LIKE 'predictions_%'
   ORDER BY creation_time DESC
   LIMIT 1
@@ -16,7 +16,7 @@ SET latest_prediction_table = (
 
 -- Step 3: Execute INSERT logic using the dynamic table name (multi-maintenance)
 EXECUTE IMMEDIATE FORMAT("""
-INSERT INTO `quiet.....`
+INSERT INTO `aerotrack_ai_connector_us_central1.maintenance_schedules`
 (icao_24, required_maintenance_type, last_serviced_date, status)
 SELECT
     source.icao_24,
@@ -31,14 +31,14 @@ SELECT
     CAST(NULL AS DATE) AS last_serviced_date,
     'Needs Maintenance' AS status
 FROM
-    `quiet.....` AS source
+    `aerotrack_ai_connector_us_central1.%s` AS source
 WHERE
     source.icao_24 IS NOT NULL
     AND source.predicted_total_flight_hours.value IS NOT NULL
     -- CRITICAL: Only insert if this specific maintenance task doesn't already exist
     AND NOT EXISTS (
         SELECT 1
-        FROM `quiet.....` AS target
+        FROM `aerotrack_ai_connector_us_central1.maintenance_schedules` AS target
         WHERE target.icao_24 = source.icao_24
         AND target.required_maintenance_type = CASE
             WHEN source.predicted_total_flight_hours.value >= 5 THEN 'D-Check'
