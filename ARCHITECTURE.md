@@ -117,13 +117,13 @@ Notes:
 Training data build: [sql/1_create_training_data.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/1_create_training_data.sql:0:0-0:0)
 
 ```sql
-CREATE OR REPLACE TABLE `quiet-engine-474303-i5.aerotrack_ai_connector.daily_flight_hours` AS
+CREATE OR REPLACE TABLE `aerotrack_ai_connector.daily_flight_hours` AS
 SELECT
   icao_24,
   DATE(last_contact) AS flight_date,
   TIMESTAMP_DIFF(MAX(last_contact), MIN(last_contact), SECOND) / 3600.0 AS total_flight_hours
 FROM
-  `quiet-engine-474303-i5.aerotrack_ai_connector.live_flights`
+  `aerotrack_ai_connector.live_flights`
 WHERE
   on_ground = FALSE
 GROUP BY
@@ -163,7 +163,7 @@ Scheduling query: [sql/2_populate_maintenance_schedule.sql](cci:7://file:///c:/U
 
 ```sql
 EXECUTE IMMEDIATE FORMAT("""
-INSERT INTO `quiet-engine-474303-i5.aerotrack_ai_connector_us_central1.maintenance_schedules`
+INSERT INTO `aerotrack_ai_connector_us_central1.maintenance_schedules`
 (icao_24, required_maintenance_type, last_serviced_date, status)
 SELECT
     source.icao_24,
@@ -177,13 +177,13 @@ SELECT
     CAST(NULL AS DATE) AS last_serviced_date,
     'Needs Maintenance' AS status
 FROM
-    `quiet-engine-474303-i5.aerotrack_ai_connector_us_central1.%s` AS source
+    `aerotrack_ai_connector_us_central1.%s` AS source
 WHERE
     source.icao_24 IS NOT NULL
     AND source.predicted_total_flight_hours.value IS NOT NULL
     AND NOT EXISTS (
         SELECT 1
-        FROM `quiet-engine-474303-i5.aerotrack_ai_connector_us_central1.maintenance_schedules` AS target
+        FROM `aerotrack_ai_connector_us_central1.maintenance_schedules` AS target
         WHERE target.icao_24 = source.icao_24
         AND target.required_maintenance_type = CASE
             WHEN source.predicted_total_flight_hours.value >= 5 THEN 'D-Check'
@@ -272,7 +272,7 @@ Alignment note:
 ## Operational Considerations
 
 - **Idempotency:** Achieved via `INSERT ... WHERE NOT EXISTS` to prevent duplicate maintenance tasks across runs.
-- **Environment specificity:** Project/dataset names in SQL (e.g., `quiet-engine-474303-i5.aerotrack_ai_connector` and `_us_central1`) are environment-bound and should be parameterized for production.
+- **Environment specificity:** Project/dataset names in SQL (e.g., `aerotrack_ai_connector` and `_us_central1`) are environment-bound and should be parameterized for production.
 - **Throughput limit:** `MAX_FLIGHTS = 300` caps ingestion for demo stability.
 - **Dependencies:** Connector imports `requests` and `fivetran_connector_sdk`; ensure they’re available in the connector runtime.
 
