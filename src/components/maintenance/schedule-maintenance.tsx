@@ -41,10 +41,6 @@ export function ScheduleMaintenance() {
     updateMaintenanceEntry(id, { status: newStatus as any });
   };
 
-  const handleMaintenanceTypeChange = (id: string, newMaintenanceType: string) => {
-    updateMaintenanceEntry(id, { maintenanceType: newMaintenanceType as any });
-  };
-
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this maintenance entry?')) {
       deleteMaintenanceEntry(id);
@@ -124,19 +120,15 @@ export function ScheduleMaintenance() {
                         className={`text-xs font-semibold rounded-full px-2 py-1 border-0 ${getStatusColor(entry.status)}`}
                       >
                         <option value="Scheduled">Scheduled</option>
+                        <option value="Pending">Pending</option>
                         <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
                       </select>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <select
-                        value={entry.maintenanceType || 'A-Check'}
-                        onChange={(e) => handleMaintenanceTypeChange(entry.id, e.target.value)}
-                        className={`text-xs font-semibold rounded-full px-2 py-1 border-0 ${getMaintenanceTypeColor(entry.maintenanceType || 'A-Check')}`}
-                      >
-                        <option value="A-Check">A-Check</option>
-                        <option value="B-Check">B-Check</option>
-                        <option value="C-Check">C-Check</option>
-                      </select>
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getMaintenanceTypeColor(entry.maintenanceType || 'A-Check')}`}>
+                        {entry.maintenanceType || 'A-Check'}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">

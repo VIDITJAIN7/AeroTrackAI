@@ -92,7 +92,7 @@ export function MaintenanceProvider({ children }: { children: ReactNode }) {
   const addMaintenanceEntry = (entry: Omit<MaintenanceEntry, 'id' | 'createdAt'>) => {
     const newEntry: MaintenanceEntry = {
       ...entry,
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: Date.now().toString(),
       createdAt: new Date().toISOString()
     };
     setMaintenanceEntries(prev => [...prev, newEntry]);
