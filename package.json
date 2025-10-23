@@ -1,20 +1,12 @@
 {
-  "name": "aerotrack-ai-frontend",
-  "version": "1.0.0",
-  "description": "AeroTrack AI - Predictive aircraft maintenance scheduling platform frontend",
+  "name": "flighttracker",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "type-check": "tsc --noEmit",
-    "preview": "next build && next start"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "lint": "eslint"
   },
   "dependencies": {
     "@google-cloud/dialogflow": "^7.2.1",
