@@ -35,7 +35,7 @@ Complete end-to-end pipeline from data ingestion to AI-powered insights, submitt
 
 ---
 
-## 🏗️ How It Works (Architecture)
+## 🏗️ How It Works 
 
 Our platform implements a sophisticated **8-step data pipeline**:
 
