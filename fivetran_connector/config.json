@@ -1,0 +1,4 @@
+{
+  "api_url": "https://opensky-network.org/api/states/all",
+  "flight_limit": "300"
+}
