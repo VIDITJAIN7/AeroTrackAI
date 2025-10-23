@@ -65,7 +65,7 @@ Our platform implements a sophisticated **8-step data pipeline**:
 
 ---
 
-## ⚠️ Limitations & Hackathon Shortcuts
+## ⚠️ Limitations
 
 To ensure demo reliability within the hackathon’s constraints, several pragmatic decisions were made:
 
@@ -97,7 +97,7 @@ To ensure demo reliability within the hackathon’s constraints, several pragmat
 
 ---
 
-## 🏆 Hackathon Highlights
+## 🏆 Highlights
 
 This project showcases the power of **Fivetran and Google Cloud** working in perfect harmony:
 
@@ -108,7 +108,15 @@ This project showcases the power of **Fivetran and Google Cloud** working in per
 
 ---
 
+## 📚 Further Documentation
+
+For in-depth details on system design, deployment, and local setup, refer to:
+
+- [**ARCHITECTURE.md**](ARCHITECTURE.md) — Explains the system’s components, data flow, and infrastructure diagram.  
+- [**SETUP.md**](SETUP.md) — Step-by-step guide for reproducing the project, including environment setup, API keys, and deployment instructions.
+
+---
+
 ## 🪪 License
 
 **MIT License**
-
