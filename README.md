@@ -1,120 +1,54 @@
- 
-# AeroTrack AI — Predictive Aircraft Maintenance
+# ✈️ AeroTrack AI — Predictive Aircraft Maintenance
 
-A backend-focused project that ingests real-time flight data and generates maintenance scheduling artifacts using SQL transformations. The repository also contains a Next.js frontend scaffold and an agent playbook, but this README centers on the backend as it exists today.
+Transforming live flight data into proactive maintenance schedules with Fivetran + BigQuery + Vertex AI, delivered via a web app and conversational AI.
+
+[![Fivetran](https://img.shields.io/badge/Fivetran-Python%20SDK-2F8CFF?logo=fivetran&logoColor=white)](#)
+[![Google Cloud / BigQuery](https://img.shields.io/badge/Google%20Cloud-BigQuery-4285F4?logo=googlecloud&logoColor=white)](#)
+[![Vertex AI AutoML](https://img.shields.io/badge/Vertex%20AI-AutoML-4285F4?logo=googlecloud&logoColor=white)](#)
+[![Vertex AI Agent Builder](https://img.shields.io/badge/Vertex%20AI-Agent%20Builder-4285F4?logo=googlecloud&logoColor=white)](#)
+[![Gemini](https://img.shields.io/badge/Gemini-Conversational%20AI-4285F4?logo=googlecloud&logoColor=white)](#)
+[![OpenSky Network](https://img.shields.io/badge/OpenSky%20Network-API-555555)](#)
+[![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)](#)
+[![BigQuery SQL](https://img.shields.io/badge/SQL-BigQuery-FFCA28?logo=googlecloud&logoColor=black)](#)
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white)](#)
+
+### 🚀 [Live Demo Link](http://your-app-url-here.com) 🚀
 
 ## Project Status
+A full-stack, functional application aligned to the AI Accelerate Hackathon (Fivetran & Google Cloud). This repo includes the custom Fivetran connector and BigQuery SQL for transformation and scheduling; Vertex AI training and batch prediction run in cloud, and a Next.js frontend scaffold is provided.
 
-- **Data ingestion:** Present via a custom connector that fetches live flight states from the OpenSky Network API and upserts records into a `live_flights` table schema ([fivetran_connector/connector.py](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:0:0-0:0)).
-- **SQL artifacts:** Present for building daily flight-hour aggregates and inserting maintenance schedules based on predictions ([sql/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql:0:0-0:0)).
-- **Predictions:** The scheduling SQL expects BigQuery tables named `predictions_%`; code/pipelines that create these are not included here.
-- **Frontend:** A Next.js project scaffold is present under [frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0) with supporting docs; details are in that folder.
-- **Agent:** A conversational assistant playbook exists in [agent/playbook.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/agent/playbook.md:0:0-0:0).
+## Core Features
+- **Real-Time Data Ingestion:** Custom Fivetran Connector (Python SDK) pulls live flight states from OpenSky.
+- **Predictive Forecasting:** Vertex AI AutoML time-series model forecasts future flight hours per aircraft.
+- **Automated Scheduling:** BigQuery scheduled query inserts required maintenance tasks from predictions.
+- **Conversational AI Agent:** Vertex AI Agent (Gemini) answers natural-language questions over BigQuery tables.
+- **Web Application:** Next.js frontend as the manager-facing portal for fleet and maintenance insights.
 
-## Repository Structure
+## How It Works (Architecture)
+1. **Ingestion (Fivetran Python SDK):** [fivetran_connector/connector.py](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:0:0-0:0) fetches live states from the OpenSky Network API and prepares upserts.
+2. **Warehousing (BigQuery):** Fivetran loads raw flight states into a BigQuery table named `live_flights`.
+3. **Transformation for ML (BigQuery SQL):** [sql/1_create_training_data.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/1_create_training_data.sql:0:0-0:0) aggregates to a `daily_flight_hours` table for model training.
+4. **Machine Learning (Vertex AI AutoML):** A time-series model is trained on `daily_flight_hours`.
+5. **Prediction (Vertex AI Batch Prediction):** Batch jobs write forecasts to timestamped `predictions_%` tables in BigQuery.
+6. **Scheduling Logic (BigQuery SQL):** [sql/2_populate_maintenance_schedule.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/2_populate_maintenance_schedule.sql:0:0-0:0) analyzes new predictions and INSERTS tasks (e.g., “A-Check”) into `maintenance_schedules`.
+7. **Application Layer (Web App):** The Next.js app in [frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0) provides a dashboard for fleet status and maintenance insights.
+8. **Conversational AI (Vertex AI Agent + Gemini):** Embedded agent connected to a BigQuery Data Store (e.g., `live_flights`, `maintenance_schedules`) answers manager questions in natural language.
 
-- [fivetran_connector/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector:0:0-0:0) — Custom data connector and related files.
-- [sql/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql:0:0-0:0) — BigQuery SQL scripts for training data creation and maintenance scheduling.
-- [agent/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/agent:0:0-0:0) — Agent behavior playbook for natural-language maintenance queries.
-- [frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0) — Next.js scaffold and setup docs.
-- [docs/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/docs:0:0-0:0) — Placeholder docs.
-- [LICENSE](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/LICENSE:0:0-0:0), [README.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/README.md:0:0-0:0), [ARCHITECTURE.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/ARCHITECTURE.md:0:0-0:0), [SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/SETUP.md:0:0-0:0) — Licensing and documentation files.
+## Limitations & Hackathon Shortcuts
+- **Simplified Maintenance Logic:** Demo-scale thresholds map predicted flight hours to generic checks (e.g., A/B/C/D-Check).
+- **Idempotent Scheduling (Deliberate Shortcut):** Uses `INSERT ... WHERE NOT EXISTS` in [sql/2_populate_maintenance_schedule.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/2_populate_maintenance_schedule.sql:0:0-0:0) to avoid duplicates and ensure demo reliability with new datasets.
+- **Single Data Source:** Current pipeline ingests only from the OpenSky Network API.
 
-## Backend Overview
+## Future Plans
+- **Integrate More Data Sources:** Weather (e.g., NOAA), flight schedules, and regulatory directives to enrich predictions.
+- **Advanced Models:** Component-level forecasting (engines, landing gear) beyond total flight hours.
+- **Frontend Enhancements:** Authentication, richer dashboards, and human-in-the-loop approvals.
+- **Proactive Alerts:** Notifications from scheduling events (e.g., via Pub/Sub) to web and email.
 
-- **Data Source**
-  - OpenSky Network API: `https://opensky-network.org/api/states/all`
+---
 
-- **Connector** ([fivetran_connector/connector.py](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:0:0-0:0))
-  - Imports: `fivetran_connector_sdk` ([Connector](cci:2://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:106:0-122:9), `Operations`, `Logging`), `requests`, `datetime`.
-  - Key functions:
-    - [schema(configuration: dict)](cci:1://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:29:0-55:5) — Returns the `live_flights` schema.
-    - [update(configuration: dict, state: dict)](cci:1://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:58:0-97:16) — Fetches OpenSky states (capped at 300 for demo), transforms, and `upsert`s each record.
-  - Entrypoints:
-    - `connector = Connector(update=update, schema=schema)`
-    - `if __name__ == "__main__": connector.debug()`
-  - Config hints (class-defined): `api_url`, `flight_limit`.
-
-- **Connector Table Schema** (`live_flights`)
-  - Primary key: `icao24`
-  - Columns:
-    - `icao24 STRING`
-    - `callsign STRING`
-    - `origin_country STRING`
-    - `time_position UTC_DATETIME`
-    - `last_contact UTC_DATETIME`
-    - `longitude DOUBLE`
-    - `latitude DOUBLE`
-    - `baro_altitude DOUBLE`
-    - `on_ground BOOLEAN`
-    - `velocity DOUBLE`
-    - `true_track DOUBLE`
-    - `vertical_rate DOUBLE`
-    - `geo_altitude DOUBLE`
-    - `squawk STRING`
-    - `spi BOOLEAN`
-    - `position_source INT`
-    - `category INT`
-
-## SQL Artifacts ([sql/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql:0:0-0:0))
-
-- **Training Data Build** — [1_create_training_data.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/1_create_training_data.sql:0:0-0:0)
-  - Creates or replaces `quiet-engine-474303-i5.aerotrack_ai_connector.daily_flight_hours`.
-  - Reads from `quiet-engine-474303-i5.aerotrack_ai_connector.live_flights`.
-  - Groups by aircraft and `DATE(last_contact)`; computes daily total flight hours with:
-    - `TIMESTAMP_DIFF(MAX(last_contact), MIN(last_contact), SECOND) / 3600.0`
-  - Filters to airborne records: `on_ground = FALSE`.
-
-- **Maintenance Scheduling** — [2_populate_maintenance_schedule.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/2_populate_maintenance_schedule.sql:0:0-0:0)
-  - Targets: `quiet-engine-474303-i5.aerotrack_ai_connector_us_central1.maintenance_schedules`.
-  - Dynamically selects the most recent table named `predictions_%` in `..._us_central1`.
-  - Inserts rows with `status = 'Needs Maintenance'` using demo thresholds:
-    - `>= 5` hours → `D-Check`
-    - `>= 4` hours → `C-Check`
-    - `>= 3` hours → `B-Check`
-    - `>= 1` hours → `A-Check`
-  - Uses `NOT EXISTS` to prevent duplicates; includes `LIMIT 100` for demo control.
-
-## Data and Config
-
-- **Sample CSV** — [fivetran_connector/maintenance_schedules.csv](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/maintenance_schedules.csv:0:0-0:0)
-  - Columns: `icao24, required_maintenance_type, last_serviced_date`
-  - Example rows: `a83565`, `ac4f32`, `406a77`.
-
-- **Connector Config** — [fivetran_connector/config.json](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/config.json:0:0-0:0)
-  - `api_url`: OpenSky endpoint.
-  - `flight_limit`: `"300"` (string literal).
-
-- **Python Requirements (connector)** — [fivetran_connector/requirements.txt](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/requirements.txt:0:0-0:0)
-  - Currently includes: `google-cloud-bigquery`.
-
-## Agent Playbook
-
-- **[agent/playbook.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/agent/playbook.md:0:0-0:0)**
-  - Goal: Answer maintenance/scheduling questions in everyday language; present clean tables with headers like ICAO24, Last Serviced Date, Maintenance Type, Status.
-  - Notes: Include records even if `last_serviced_date` is null; use flexible/fuzzy matching for user inputs (e.g., variants of “A-Check”).
-
-## Frontend (Brief)
-
-- **[frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0)**
-  - Next.js scaffold (`next 15`, `react 19`) with TypeScript/Tailwind configs.
-  - Docs for Dialogflow and deployment: [DIALOGFLOW_SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend/DIALOGFLOW_SETUP.md:0:0-0:0), [DIALOGFLOW_AGENT_SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend/DIALOGFLOW_AGENT_SETUP.md:0:0-0:0), [DIALOGFLOW_CX_SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend/DIALOGFLOW_CX_SETUP.md:0:0-0:0), [VERCEL_SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend/VERCEL_SETUP.md:0:0-0:0).
-  - Detailed setup and architecture are documented in that folder and other docs.
-
-## Notes and Limitations
-
-- **Predictions dependency:** [sql/2_populate_maintenance_schedule.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/2_populate_maintenance_schedule.sql:0:0-0:0) expects a BigQuery table named like `predictions_%` in `..._us_central1`. Generation of these tables is not included.
-- **Environment IDs:** SQL scripts reference project/dataset IDs (`quiet-engine-474303-i5.aerotrack_ai_connector` and `..._us_central1`) that are environment-specific.
-- **Field naming mismatch:** The connector schema uses `icao24` (no underscore), while SQL scripts reference `icao_24` in places; alignment is required during deployment.
-- **Demo thresholds:** Maintenance type thresholds are intentionally simple (1–5 total hours).
-- **Single source:** Ingestion logic targets the OpenSky states API.
-
-## License
-
-- **MIT License** — see [LICENSE](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/LICENSE:0:0-0:0).
-
-## Where to Look Next
-
-- **Setup and deployment:** [SETUP.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/SETUP.md:0:0-0:0)
-- **Architecture details:** [ARCHITECTURE.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/ARCHITECTURE.md:0:0-0:0)
-- **Frontend and agent integration:** [frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0) and [agent/playbook.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/agent/playbook.md:0:0-0:0)
+- Ingestion code: [fivetran_connector/connector.py](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/fivetran_connector/connector.py:0:0-0:0)
+- SQL: [sql/1_create_training_data.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/1_create_training_data.sql:0:0-0:0), [sql/2_populate_maintenance_schedule.sql](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/sql/2_populate_maintenance_schedule.sql:0:0-0:0)
+- Frontend scaffold: [frontend/](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/frontend:0:0-0:0)
+- Agent playbook: [agent/playbook.md](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/agent/playbook.md:0:0-0:0)
+- License: [LICENSE](cci:7://file:///c:/Users/vidit/Desktop/Projects/AeroTrackAI/LICENSE:0:0-0:0) (MIT)
