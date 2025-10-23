@@ -1,0 +1,44 @@
+{
+  "name": "aerotrack-ai-frontend",
+  "version": "1.0.0",
+  "description": "AeroTrack AI - Predictive aircraft maintenance scheduling platform frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "vercel-build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "preview": "NEXT_TELEMETRY_DISABLED=1 next build && next start"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/dialogflow": "^7.2.1",
+    "@google-cloud/dialogflow-cx": "^5.4.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.546.0",
+    "next": "15.5.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.6",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^5"
+  }
+}
