@@ -78,7 +78,11 @@ To ensure demo reliability within the hackathon’s constraints, several pragmat
 
 - **Single Data Source**  
   The current pipeline ingests only from the **OpenSky Network API**.
+  
+- **Data Limit**  
+  There is a limit of 300 flights due to computational overhead, but it can be easily disabled for widescale deployment.
 
+  
 ---
 
 ## 🚀 Future Plans
